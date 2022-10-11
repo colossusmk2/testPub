@@ -1,38 +1,38 @@
 # Steps to publish to maven central
 - Create a  library/aar repo that needs to be pulished.
 - Push the code to a public Github repo. I uploaded to https://github.com/colossusmk2/testPub
-- After that create an account on sonatype(https://issues.sonatype.org/secure/Dashboard.jspa) and create an issue following steps:
-        - click on create issue
-        - In Type:give New Project
-        - In community select: Community Support - Open Source Project Repository Hosting
-        - In GroupID, give following io.github.<yourgithubUserName>. I gave io.github.colossusmk2
-        - In project URL, give your Github project URL. I gave https://github.com/colossusmk2/testPub
-        - In SCM URL, give your cloning URL. I gave: https://github.com/colossusmk2/testPub.git
-        - Already synced to central; mention No
-        - You may need to respond to issue owners queries. One of the query was to identify ownership like following: Create a temporary, public repository called https://github.com/colossusmk2/OSSRH-85214 to verify github account ownership. Just do thins and click respond.
-        - Once you are onboarded to central repo, you will get following message:     "Congratulations! Welcome to the Central Repository! io.github.colossusmk2 has been     prepared, now user(s) colossusmk2 can: Publish snapshot and release artifacts to s01.oss.sonatype.org Have a look at this section of our official guide for deployment instructions: https://central.sonatype.org/publish/publish-guide/#deployment"
-        - Notedown the URL s01.oss.sonatype.org. This is a link to nexus repo manager.We will need to go to this once we are done with next steps; Generating keys and making code changes
-- Now we need to generate some keys. Follow below steps:
-        - Open Gitbash
-        - execute following command: gpg --full-gen-key
-        - It will ask you to select what kind of key you want. Select (1) RSA and RSA (default)
-        - Than it will ask you the keysize. Give 4096
-        - Than select validity to  0 = key does not expire
-        - Confirm if all data is correct with Y
-        - Than it will ask you some info to construct a user ID to identify your key. Give your real name(i gave colossusmk2), Email address(I gave colossusmk2@gmail.com), Comment etc
-        - It will generate the key in current folder where gitbash is open. For me it created on following location /c/Users/tarun/.gnupg/trustdb.gpg: trustdb created
-        - It will create pub, uid and sub. Save these somewhere
-        - last 8 digits of sub; in my case 5282A1C9 are used in following steps.
-        - Now execute following commands: gpg --keyserver keyserver.ubuntu.com --send-keys 5282A1C9
-        - Than execute this command: gpg --export-secret-keys 5282A1C9 | base64
+- After that create an account on sonatype(https://issues.sonatype.org/secure/Dashboard.jspa) and create an issue following steps:  
+        - click on create issue  
+        - In Type:give New Project  
+        - In community select: Community Support - Open Source Project Repository Hosting  
+        - In GroupID, give following io.github.<yourgithubUserName>. I gave io.github.colossusmk2  
+        - In project URL, give your Github project URL. I gave https://github.com/colossusmk2/testPub  
+        - In SCM URL, give your cloning URL. I gave: https://github.com/colossusmk2/testPub.git  
+        - Already synced to central; mention No  
+        - You may need to respond to issue owners queries. One of the query was to identify ownership like following: Create a temporary, public repository called https://github.com/colossusmk2/OSSRH-85214 to verify github account ownership. Just do thins and click respond.  
+        - Once you are onboarded to central repo, you will get following message:     "Congratulations! Welcome to the Central Repository! io.github.colossusmk2 has been     prepared, now user(s) colossusmk2 can: Publish snapshot and release artifacts to s01.oss.sonatype.org Have a look at this section of our official guide for deployment instructions: https://central.sonatype.org/publish/publish-guide/#deployment"  
+        - Notedown the URL s01.oss.sonatype.org. This is a link to nexus repo manager.We will need to go to this once we are done with next steps; Generating keys and making code changes  
+- Now we need to generate some keys. Follow below steps:  
+        - Open Gitbash  
+        - execute following command: gpg --full-gen-key  
+        - It will ask you to select what kind of key you want. Select (1) RSA and RSA (default)  
+        - Than it will ask you the keysize. Give 4096  
+        - Than select validity to  0 = key does not expire  
+        - Confirm if all data is correct with Y  
+        - Than it will ask you some info to construct a user ID to identify your key. Give your real name(i gave colossusmk2), Email address(I gave colossusmk2@gmail.com), Comment etc  
+        - It will generate the key in current folder where gitbash is open. For me it created on following location /c/Users/tarun/.gnupg/trustdb.gpg: trustdb created  
+        - It will create pub, uid and sub. Save these somewhere  
+        - last 8 digits of sub; in my case 5282A1C9 are used in following steps.  
+        - Now execute following commands: gpg --keyserver keyserver.ubuntu.com --send-keys 5282A1C9  
+        - Than execute this command: gpg --export-secret-keys 5282A1C9 | base64  
         - A large key will be generated. remove newlines and make sure content of the file is in one line. It will be used in next steps, making code changes
-- Now You need to make some code changes:
-        - In project build.gradle, plugin is added in line number 6 as: id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-        - IN Project build.gradle, publish task is added at line numebr 13 as: apply from: "${rootDir}/scripts/publish-root.gradle"
-        - Create a scripts folder in root project at the level of app module
-        - Add two files to scripts folder: publish-module.gradle and publish-root.gradle
-        - Both files are added in this repo. Feel free to explore as you need to mention your build variants, github repo links etc in these two files.
-        - Commit in repo is 3rd commit whose commit hash is 43a34c13cef3fe09432e7b59f16a0b064116cfd0
-- Execute Publish task in gradle window of your project. In case tasks is not visible, Click on following Gradle settings -> Experimental -> Uncheck "Do not build gradle task list during gradle sync". Now Tasks should be visible in gradle window. Publish the aar file by clicking on following: Tasks -> publishing -> PublishSitPublicationToSonatypeRepository
-- Now go to nexus repo manager at s01.oss.sonatype.org. YOu need to login with Sonatype username password here. Here go to "Staging Repositories". Here you will be able to see the repo now. You need to release the repo from here. For relase, note status is currently open. There is a close button the the line just above repo once it is selected. First close the repo. Once status become close after some time, release button becomes enabled. Release it.
-- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.
+- Now You need to make some code changes:  
+        - In project build.gradle, plugin is added in line number 6 as: id("io.github.gradle-nexus.publish-plugin") version "1.1.0"  
+        - In Project build.gradle, publish task is added at line numebr 13 as: apply from: "${rootDir}/scripts/publish-root.gradle"  
+        - Create a scripts folder in root project at the level of app module  
+        - Add two files to scripts folder: publish-module.gradle and publish-root.gradle  
+        - Both files are added in this repo. Feel free to explore as you need to mention your build variants, github repo links etc in these two files.  
+        - Commit in repo is 3rd commit whose commit hash is 43a34c13cef3fe09432e7b59f16a0b064116cfd0  
+- Execute Publish task in gradle window of your project. In case tasks is not visible, Click on following Gradle settings -> Experimental -> Uncheck "Do not build gradle task list during gradle sync". Now Tasks should be visible in gradle window. Publish the aar file by clicking on following: Tasks -> publishing -> PublishSitPublicationToSonatypeRepository  
+- Now go to nexus repo manager at s01.oss.sonatype.org. YOu need to login with Sonatype username password here. Here go to "Staging Repositories". Here you will be able to see the repo now. You need to release the repo from here. For relase, note status is currently open. There is a close button the the line just above repo once it is selected. First close the repo. Once status become close after some time, release button becomes enabled. Release it.  
+- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.  
