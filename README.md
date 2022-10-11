@@ -35,4 +35,5 @@
         - Commit in repo is 3rd commit whose commit hash is 43a34c13cef3fe09432e7b59f16a0b064116cfd0  
 - Execute Publish task in gradle window of your project. In case tasks is not visible, Click on following Gradle settings -> Experimental -> Uncheck "Do not build gradle task list during gradle sync". Now Tasks should be visible in gradle window. Publish the aar file by clicking on following: Tasks -> publishing -> PublishSitPublicationToSonatypeRepository  
 - Now go to nexus repo manager at s01.oss.sonatype.org. YOu need to login with Sonatype username password here. Here go to "Staging Repositories". Here you will be able to see the repo now. You need to release the repo from here. For relase, note status is currently open. There is a close button the the line just above repo once it is selected. First close the repo. Once status become close after some time, release button becomes enabled. Release it.  
-- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.  
+- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.    
+- Though we have referred many links for doing this, ,most help was from following link : https://getstream.io/blog/publishing-libraries-to-mavencentral-2021/
