@@ -26,6 +26,7 @@
         - Now execute following commands: gpg --keyserver keyserver.ubuntu.com --send-keys 5282A1C9  
         - Than execute this command: gpg --export-secret-keys 5282A1C9 | base64  
         - A large key will be generated. remove newlines and make sure content of the file is in one line. It will be used in next steps, making code changes
+- Get your staging profile id by loggin to nexus repo manager at s01.oss.sonatype.org. Here click following Staging Profiles -> Select staging profile -> Copy profile ID from address/URL bar. This along with some other data will go to local.properties file which u can refer in repo.
 - Now You need to make some code changes:  
         - In project build.gradle, plugin is added in line number 6 as: id("io.github.gradle-nexus.publish-plugin") version "1.1.0"  
         - In Project build.gradle, publish task is added at line numebr 13 as: apply from: "${rootDir}/scripts/publish-root.gradle"  
@@ -35,5 +36,8 @@
         - Commit in repo is 3rd commit whose commit hash is 43a34c13cef3fe09432e7b59f16a0b064116cfd0  
 - Execute Publish task in gradle window of your project. In case tasks is not visible, Click on following Gradle settings -> Experimental -> Uncheck "Do not build gradle task list during gradle sync". Now Tasks should be visible in gradle window. Publish the aar file by clicking on following: Tasks -> publishing -> PublishSitPublicationToSonatypeRepository  
 - Now go to nexus repo manager at s01.oss.sonatype.org. YOu need to login with Sonatype username password here. Here go to "Staging Repositories". Here you will be able to see the repo now. You need to release the repo from here. For relase, note status is currently open. There is a close button the the line just above repo once it is selected. First close the repo. Once status become close after some time, release button becomes enabled. Release it.  
-- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.    
+- Now go to https://repo1.maven.org/maven2/io/github/. Here your project will become visible after half an hour or so.   
+- Once your folder is visible in maven2, you need to create implementation url follows:  
+        - Example link for what i created was implementation "io.github.colossusmk2:test-pub-prod:1.0.0@aar"  
+        - Here fodler path was io/github/colossusmk2/test-pub-prod/1.0.0 You can see the relevant connections in these two path and implementation link.
 - Though we have referred many links for doing this, ,most help was from following link : https://getstream.io/blog/publishing-libraries-to-mavencentral-2021/
