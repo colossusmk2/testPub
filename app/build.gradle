@@ -17,10 +17,25 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "client"
+    productFlavors {
+        sit {
+            dimension "client"
+            buildConfigField "String", "BILLING_HOST", "\"com.jio.jiopay\""
+            buildConfigField "String", "BILLING_HOST_SAMPLE", "\"\""
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,7 +46,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
@@ -39,3 +53,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+ext {
+    PUBLISH_GROUP_ID = 'io.github.colossusmk2'
+    PUBLISH_VERSION = '1.0.0'
+    PUBLISH_ARTIFACT_ID = 'test-pub-prod'
+    PUBLISH_ARTIFACT_ID_SIT = 'test-pub-sit'
+    PUBLISH_VERSION_SIT = '1.0.0'
+    PUBLISH_ARTIFACT_ID_UAT = 'test-pub-pp'
+    PUBLISH_VERSION_UAT = '1.0.0'
+}
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
