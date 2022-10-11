@@ -26,7 +26,7 @@
         - Now execute following commands: gpg --keyserver keyserver.ubuntu.com --send-keys 5282A1C9  
         - Than execute this command: gpg --export-secret-keys 5282A1C9 | base64  
         - A large key will be generated. remove newlines and make sure content of the file is in one line. It will be used in next steps, making code changes
-- Get your staging profile id by loggin to nexus repo manager at s01.oss.sonatype.org. Here click following Staging Profiles -> Select staging profile -> Copy profile ID from address/URL bar. This along with some other data will go to local.properties file which u can refer in repo.
+- Get your staging profile id by loggin to nexus repo manager at s01.oss.sonatype.org. Here click following Staging Profiles -> Select staging profile -> Copy profile ID from address/URL bar. This along with some other data will go to local.properties file which u can refer in repo. Local.properties file contains some keys like signing.key which is that large key generated from gitbash and made into single line. Similarly sonatypeStagingProfileId contains profile id just mentioned above.
 - Now You need to make some code changes:  
         - In project build.gradle, plugin is added in line number 6 as: id("io.github.gradle-nexus.publish-plugin") version "1.1.0"  
         - In Project build.gradle, publish task is added at line numebr 13 as: apply from: "${rootDir}/scripts/publish-root.gradle"  
